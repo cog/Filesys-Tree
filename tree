@@ -44,7 +44,10 @@ sub show_tree {
   while (my $key = shift @keys) {
     print level($level, scalar @keys, { %$levels}), "$key\n";
     if (defined $tree->{$key}{contents}) {
-      show_tree($level + 1, { %$levels, $level => scalar @keys }, $tree->{$key}{contents})
+      show_tree( $level + 1,
+                 { %$levels, $level => scalar @keys },
+                 $tree->{$key}{contents}
+                 );
     }
   }
 }
