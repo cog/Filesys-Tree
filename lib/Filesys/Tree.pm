@@ -109,15 +109,18 @@ sub tree {
     }
 
     elsif (-d) { # is a directory
-      opendir(DIR,$_);
-      (my $dir = $_) =~ s{/$}{};
-      (my $sub = $dir);
-      $sub = basename($sub) unless $config{full};
-      $tree->{$sub} = { type => 'd' , contents => 
-                                    tree( { %config , 'max-depth' => $config{'max-depth'} - 1 } ,
-                                                     map {"$dir/$_"}
-                                                     grep {$config{all} || /^[^.]/}
-                                                     grep {! /^\.\.?$/} readdir DIR ) };
+        opendir(DIR,$_);
+        (my $dir = $_) =~ s{/$}{};
+        (my $sub = $dir);
+        $sub = basename($sub) unless $config{full};
+        $tree->{$sub} = {
+            type     => 'd' ,
+            contents => tree( { %config ,
+                              'max-depth' => $config{'max-depth'} - 1 } ,
+                              map {"$dir/$_"}
+                              grep {$config{all} || /^[^.]/}
+                              grep {! /^\.\.?$/} readdir DIR )
+        };
     }
 
   }
